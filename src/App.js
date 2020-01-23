@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Navbar } from "./Navbar";
 import useSWR from "swr";
 import styled from "styled-components";
 import { AnimeComponent } from "./AnimeComponent";
+import { debounce } from "lodash";
 
 function App() {
   return (
@@ -62,7 +63,6 @@ function PopolariPage() {
     "https://api.jikan.moe/v3/top/anime",
     fetchJSON
   );
-
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
   return data.top.map(jikanDTOtoAnime).map(anime => {
@@ -128,5 +128,36 @@ function BruttiPage() {
 
 // - ricerca anime
 function RicercaPage() {
-  return <h1>Ricerca</h1>;
+  const [searchText, setSearchText] = useState("");
+  const [searchTextDebounced, setSearchTextDebounced] = useState("");
+  const updateDebounced = useCallback(debounce(setSearchTextDebounced, 1000), [
+    setSearchTextDebounced
+  ]);
+  useEffect(() => {
+    updateDebounced(searchText)
+  }, [updateDebounced, searchText]);
+  const { data, error } = useSWR(
+    `https://api.jikan.moe/v3/search/anime?q=${searchTextDebounced}`,
+    fetchJSON
+  );
+  return (
+    <>
+      <input
+        value={searchText}
+        onChange={event => setSearchText(event.target.value)}
+        placeholder="Full Metal Alchemist"
+      />
+      {(() => {
+        if (error) return <div>failed to load</div>;
+        if (!data) return <div>loading...</div>;
+        return data.results.map(jikanDTOtoAnime).map(anime => {
+          return <AnimeComponent key={anime.id} anime={anime} />;
+        });
+      })()}
+    </>
+  );
 }
+
+(() => {
+  /* code here */
+})(); // IIFE (Immediately Invoked Function Expression)
