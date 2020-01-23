@@ -1,3 +1,66 @@
+# Requisiti
+
+## Must have
+
+- webapp per tenere traccio degli anime guardati
+- cercare anime per nome
+- vedere anime piu popolari
+- dare una valutazione personale
+- vedere la classifica personale
+- segnare puntate viste anime
+- i dati da salvare sul dispositivo personale
+
+## Should have
+
+responsive
+
+## Nice to have
+
+grafica accattivante
+
+# Analisi
+
+concetti chiave: anime, valutazione, progresso visione, seguendo, ricerca, classifica (personale/globale)
+
+## Schermate
+
+- anime piu popolari
+  - lista di anime (non filtrata, ordinata in base popolarità piu alta)
+- scopri
+  - lista di anime (filtrata per quelli non seguiti, ordinata in base popolarità piu alta)
+- anime piu belli che ho visto
+  - lista di anime filtro=personale ordinamento=decrescente
+- anime continua a guardare
+  - lista di anime filtro=seguito ordinamento=decrescente (valutazione globale)
+- anime completati
+  - lista di anime filtro=progressione==max ordinamento=decrescente (valutazione personale)
+- anime più brutti
+  - lista di anime filtro=pregressione==max ordinamento crescente (sulla valutazione personale)
+- ricerca anime
+
+# Progettazione
+
+anime {
+  titolo,
+  valutazioneGlobale, 1-10
+  valutazionePersonale, 1-10
+  numeroEpisodi, 0-n
+  numeroEpisodiVisti, 0 - n
+  seguito, booleano
+  copertina, url immagine
+}
+
+webapp in react (utilizzo di hook)
+
+multipagina con react router
+
+recupero dati da fonte esterna (jikan)
+
+gestione caricamento dati con libreria swr
+
+salvataggio dati in localStorage
+
+--------
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
