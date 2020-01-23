@@ -28,6 +28,9 @@ function App() {
         <Route path="/brutti">
           <BruttiPage />
         </Route>
+        <Route path="/">
+          <ContinuaPage />
+        </Route>
       </Switch>
     </Router>
   );
