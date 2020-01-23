@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Navbar } from "./Navbar";
 import useSWR from "swr";
 import styled from "styled-components";
+import { AnimeComponent } from "./AnimeComponent";
 
 function App() {
   return (
@@ -82,12 +83,6 @@ function jikanDTOtoAnime(anime) {
   };
 }
 
-async function fetchJSON(url) {
-  const response = await fetch(url);
-  const data = await response.json();
-  return data;
-}
-
 // function fetchJSONCompiled(url) {
 //   fetch(url).then(response => {
 //     response.json().then(data => {
@@ -95,33 +90,11 @@ async function fetchJSON(url) {
 //     })
 //   })
 // }
-
-// funcition AnimeComponent(props) {
-// const anime = props.anime;
-// ....
-function AnimeComponent({ anime }) {
-  return (
-    <StyledAnimeCard>
-      <StyledCopertina src={anime.copertina} />
-      {anime.titolo}
-    </StyledAnimeCard>
-  );
+async function fetchJSON(url) {
+  const response = await fetch(url);
+  const data = await response.json();
+  return data;
 }
-
-const StyledCopertina = styled.img`
-  width: 120px;
-  object-fit: contain;
-  /* object-position: left; */
-`;
-
-const StyledAnimeCard = styled.div`
-  border-radius: 4px;
-  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.75);
-  margin: 8px;
-  max-width: 600px;
-  display: flex;
-  overflow: hidden;
-`;
 
 // - scopri
 //   - lista di anime (filtrata per quelli non seguiti, ordinata in base popolarità piu alta)
