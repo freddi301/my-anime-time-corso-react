@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Navbar } from "./Navbar";
+import useSWR from "swr";
 
 function App() {
   return (
@@ -41,8 +42,26 @@ export default App;
 // - anime piu popolari
 //   - lista di anime (non filtrata, ordinata in base popolarità piu alta)
 function PopolariPage() {
-  return <h1>Popolari</h1>;
+  const { data, error } = useSWR("https://api.jikan.moe/v3/top/anime", fetchJSON);
+
+  if (error) return <div>failed to load</div>;
+  if (!data) return <div>loading...</div>;
+  return <pre>{JSON.stringify(data, null, 2)}</pre>;
 }
+
+async function fetchJSON(url){
+  const response = await fetch(url);
+  const data = await response.json();
+  return data;
+}
+
+// function fetchJSONCompiled(url) {
+//   fetch(url).then(response => {
+//     response.json().then(data => {
+//       return data
+//     })
+//   })
+// }
 
 // - scopri
 //   - lista di anime (filtrata per quelli non seguiti, ordinata in base popolarità piu alta)
