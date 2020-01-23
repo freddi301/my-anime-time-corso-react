@@ -7,6 +7,13 @@ import { AnimeComponent } from "./AnimeComponent";
 import { debounce } from "lodash";
 
 function App() {
+  const [seguiti, setSeguiti] = useState(new Set());
+  function segui(id) {
+    setSeguiti(new Set(seguiti).add(id));
+  }
+  function smettiSegui(id) {
+    setSeguiti(new Set(seguiti).delete(id));
+  }
   return (
     <Router>
       <StyledWholeScreen>
@@ -14,10 +21,18 @@ function App() {
         <StyledScrollArea>
           <Switch>
             <Route path="/popolari">
-              <PopolariPage />
+              <PopolariPage
+                seguiti={seguiti}
+                segui={segui}
+                smettiSegui={smettiSegui}
+              />
             </Route>
             <Route path="/scopri">
-              <ScopriPage />
+              <ScopriPage
+                seguiti={seguiti}
+                segui={segui}
+                smettiSegui={smettiSegui}
+              />
             </Route>
             <Route path="/ricerca">
               <RicercaPage />
@@ -58,16 +73,27 @@ const StyledScrollArea = styled.div`
 
 // - anime piu popolari
 //   - lista di anime (non filtrata, ordinata in base popolarità piu alta)
-function PopolariPage() {
+function PopolariPage({ seguiti, segui, smettiSegui }) {
   const { data, error } = useSWR(
     "https://api.jikan.moe/v3/top/anime",
     fetchJSON
   );
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
-  return data.top.map(jikanDTOtoAnime).map(anime => {
-    return <AnimeComponent key={anime.id} anime={anime} />;
-  });
+  return data.top
+    .map(jikanDTOtoAnime)
+    .map(addPersonalInfoToAnime(seguiti))
+    .map(anime => {
+      return (
+        <AnimeComponent
+          key={anime.id}
+          anime={anime}
+          seguiti={seguiti}
+          segui={segui}
+          smettiSegui={smettiSegui}
+        />
+      );
+    });
 }
 
 function jikanDTOtoAnime(anime) {
@@ -82,6 +108,11 @@ function jikanDTOtoAnime(anime) {
     copertina: anime.image_url
   };
 }
+
+const addPersonalInfoToAnime = seguiti => anime => ({
+  ...anime,
+  seguito: seguiti.has(anime.id)
+});
 
 // function fetchJSONCompiled(url) {
 //   fetch(url).then(response => {
@@ -98,8 +129,28 @@ async function fetchJSON(url) {
 
 // - scopri
 //   - lista di anime (filtrata per quelli non seguiti, ordinata in base popolarità piu alta)
-function ScopriPage() {
-  return <h1>Scopri</h1>;
+function ScopriPage({ seguiti, segui, smettiSegui }) {
+  const { data, error } = useSWR(
+    "https://api.jikan.moe/v3/top/anime",
+    fetchJSON
+  );
+  if (error) return <div>failed to load</div>;
+  if (!data) return <div>loading...</div>;
+  return data.top
+    .map(jikanDTOtoAnime)
+    .map(addPersonalInfoToAnime(seguiti))
+    .filter(anime => !anime.seguito)
+    .map(anime => {
+      return (
+        <AnimeComponent
+          key={anime.id}
+          anime={anime}
+          seguiti={seguiti}
+          segui={segui}
+          smettiSegui={smettiSegui}
+        />
+      );
+    });
 }
 
 // - anime piu belli che ho visto
@@ -134,7 +185,7 @@ function RicercaPage() {
     setSearchTextDebounced
   ]);
   useEffect(() => {
-    updateDebounced(searchText)
+    updateDebounced(searchText);
   }, [updateDebounced, searchText]);
   const { data, error } = useSWR(
     `https://api.jikan.moe/v3/search/anime?q=${searchTextDebounced}`,

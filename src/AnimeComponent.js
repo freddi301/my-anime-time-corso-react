@@ -4,11 +4,20 @@ import styled from "styled-components";
 // funcition AnimeComponent(props) {
 // const anime = props.anime;
 // ....
-export function AnimeComponent({ anime }) {
-  return (<StyledAnimeCard>
-    <StyledCopertina src={anime.copertina} />
-    {anime.titolo}
-  </StyledAnimeCard>);
+export function AnimeComponent({ anime, segui, smettiSegui }) {
+  return (
+    <StyledAnimeCard>
+      <StyledCopertina src={anime.copertina} />
+      {anime.titolo}
+      <input
+        type="checkbox"
+        checked={anime.seguito}
+        onChange={() =>
+          anime.seguito ? smettiSegui(anime.id) : segui(anime.id)
+        }
+      />
+    </StyledAnimeCard>
+  );
 }
 
 const StyledCopertina = styled.img`
