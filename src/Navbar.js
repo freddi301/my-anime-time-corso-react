@@ -31,12 +31,13 @@ export function Navbar() {
 const StyledNavbarContainer = styled.div`
   display: flex;
   box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.75);
+  overflow-x: auto;
+  width: 100%;
 `;
 
 const StyledNavbarItem = styled.div`
-  flex-grow: 1;
   min-height: 1cm;
-  min-width: 1cm;
+  margin-left: 1em;
   display: flex;
   align-items: center;
   justify-content: center;
