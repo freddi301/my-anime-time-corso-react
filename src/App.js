@@ -2,54 +2,72 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Navbar } from "./Navbar";
 import useSWR from "swr";
+import styled from "styled-components";
 
 function App() {
   return (
     <Router>
-      <Navbar />
-      <Switch>
-        <Route path="/popolari">
-          <PopolariPage />
-        </Route>
-        <Route path="/scopri">
-          <ScopriPage />
-        </Route>
-        <Route path="/ricerca">
-          <RicercaPage />
-        </Route>
-        <Route path="/continua">
-          <ContinuaPage />
-        </Route>
-        <Route path="/completati">
-          <CompletatiPage />
-        </Route>
-        <Route path="/belli">
-          <BelliPage />
-        </Route>
-        <Route path="/brutti">
-          <BruttiPage />
-        </Route>
-        <Route path="/">
-          <ContinuaPage />
-        </Route>
-      </Switch>
+      <StyledWholeScreen>
+        <Navbar />
+        <StyledScrollArea>
+          <Switch>
+            <Route path="/popolari">
+              <PopolariPage />
+            </Route>
+            <Route path="/scopri">
+              <ScopriPage />
+            </Route>
+            <Route path="/ricerca">
+              <RicercaPage />
+            </Route>
+            <Route path="/continua">
+              <ContinuaPage />
+            </Route>
+            <Route path="/completati">
+              <CompletatiPage />
+            </Route>
+            <Route path="/belli">
+              <BelliPage />
+            </Route>
+            <Route path="/brutti">
+              <BruttiPage />
+            </Route>
+            <Route path="/">
+              <ContinuaPage />
+            </Route>
+          </Switch>
+        </StyledScrollArea>
+      </StyledWholeScreen>
     </Router>
   );
 }
 
 export default App;
 
+const StyledWholeScreen = styled.div`
+  width: 100vw;
+  height: 100vh;
+`;
+
+const StyledScrollArea = styled.div`
+  overflow-y: scroll;
+  height: calc(100% - 1cm);
+`;
+
 // - anime piu popolari
 //   - lista di anime (non filtrata, ordinata in base popolarità piu alta)
 function PopolariPage() {
-  const { data, error } = useSWR("https://api.jikan.moe/v3/top/anime", fetchJSON);
+  const { data, error } = useSWR(
+    "https://api.jikan.moe/v3/top/anime",
+    fetchJSON
+  );
 
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
   return <pre>{JSON.stringify(data, null, 2)}</pre>;
 }
 
-async function fetchJSON(url){
+async function fetchJSON(url) {
   const response = await fetch(url);
   const data = await response.json();
   return data;
