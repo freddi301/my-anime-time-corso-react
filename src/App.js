@@ -1,58 +1,107 @@
-import React from 'react';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 function App() {
   return (
-    <Navbar/>
+    <Router>
+      <Navbar />
+      <Switch>
+        <Route path="/popolari">
+          <PopolariPage />
+        </Route>
+        <Route path="/scopri">
+          <ScopriPage />
+        </Route>
+        <Route path="/ricerca">
+          <RicercaPage />
+        </Route>
+        <Route path="/continua">
+          <ContinuaPage />
+        </Route>
+        <Route path="/completati">
+          <CompletatiPage />
+        </Route>
+        <Route path="/belli">
+          <BelliPage />
+        </Route>
+        <Route path="/brutti">
+          <BruttiPage />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 
 export default App;
 
 // navbar
-function Navbar(){
-  return <div>
-    <ol>
-      <li>
-        popolari
-      </li>
-      <li>
-        scopri
-      </li>
-      <li>
-        ricerca
-      </li>
-      <li>
-        continua
-      </li>
-      <li>
-        completati
-      </li>
-      <li>
-        belli
-      </li>
-      <li>
-        brutti
-      </li>
-    </ol>
-  </div>
+function Navbar() {
+  return (
+    <div>
+      <ol>
+        <li>
+          <Link to="/popolari">popolari</Link>
+        </li>
+        <li>
+          <Link to="/scopri">scopri</Link>
+        </li>
+        <li>
+          <Link to="/ricerca">ricerca</Link>
+        </li>
+        <li>
+          <Link to="/continua">continua</Link>
+        </li>
+        <li>
+          <Link to="/completati">completati</Link>
+        </li>
+        <li>
+          <Link to="/belli">belli</Link>
+        </li>
+        <li>
+          <Link to="/brutti">brutti</Link>
+        </li>
+      </ol>
+    </div>
+  );
 }
 
 // - anime piu popolari
 //   - lista di anime (non filtrata, ordinata in base popolarità piu alta)
+function PopolariPage() {
+  return <h1>Popolari</h1>;
+}
 
 // - scopri
 //   - lista di anime (filtrata per quelli non seguiti, ordinata in base popolarità piu alta)
+function ScopriPage() {
+  return <h1>Scopri</h1>;
+}
 
 // - anime piu belli che ho visto
 //   - lista di anime filtro=personale ordinamento=decrescente (valutazione personale)
+function BelliPage() {
+  return <h1>Belli</h1>;
+}
 
 // - anime continua a guardare
 //   - lista di anime filtro=seguito ordinamento=decrescente (valutazione globale)
+function ContinuaPage() {
+  return <h1>Continua</h1>;
+}
 
 // - anime completati
-//   - lista di anime filtro=progressione==max ordinamento=decrescente 
+//   - lista di anime filtro=progressione==max ordinamento=decrescente
+function CompletatiPage() {
+  return <h1>Completati</h1>;
+}
 
 // - anime più brutti
 //   - lista di anime filtro=pregressione==max ordinamento crescente (sulla valutazione personale)
+function BruttiPage() {
+  return <h1>Brutti</h1>;
+}
 
 // - ricerca anime
+function RicercaPage() {
+  return <h1>Ricerca</h1>;
+}
