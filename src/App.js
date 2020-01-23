@@ -24,3 +24,25 @@ function App() {
 }
 
 export default App;
+
+// navbar
+
+// - anime piu popolari
+//   - lista di anime (non filtrata, ordinata in base popolarità piu alta)
+
+// - scopri
+//   - lista di anime (filtrata per quelli non seguiti, ordinata in base popolarità piu alta)
+
+// - anime piu belli che ho visto
+//   - lista di anime filtro=personale ordinamento=decrescente
+
+// - anime continua a guardare
+//   - lista di anime filtro=seguito ordinamento=decrescente (valutazione globale)
+
+// - anime completati
+//   - lista di anime filtro=progressione==max ordinamento=decrescente (valutazione personale)
+
+// - anime più brutti
+//   - lista di anime filtro=pregressione==max ordinamento crescente (sulla valutazione personale)
+
+// - ricerca anime
