@@ -64,7 +64,27 @@ function PopolariPage() {
 
   if (error) return <div>failed to load</div>;
   if (!data) return <div>loading...</div>;
-  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+  return data.top.map(jikanDTOtoAnime).map(anime => {
+    return (
+      <StyledAnimeCard key={anime.id}>
+        <StyledCopertina src={anime.copertina} />
+        {anime.titolo}
+      </StyledAnimeCard>
+    );
+  });
+}
+
+function jikanDTOtoAnime(anime) {
+  return {
+    id: anime.mal_id,
+    titolo: anime.title,
+    valutazioneGlobale: anime.score,
+    valutazionePersonale: 0,
+    numeroEpisodi: anime.episodes,
+    numeroEpisodiVisti: 0,
+    seguito: false,
+    copertina: anime.image_url
+  }
 }
 
 async function fetchJSON(url) {
@@ -80,6 +100,21 @@ async function fetchJSON(url) {
 //     })
 //   })
 // }
+
+const StyledCopertina = styled.img`
+  width: 120px;
+  object-fit: contain;
+  /* object-position: left; */
+`
+
+const StyledAnimeCard = styled.div`
+  border-radius: 4px;
+  box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.75);
+  margin: 8px;
+  max-width: 600px;
+  display: flex;
+  overflow: hidden;
+`
 
 // - scopri
 //   - lista di anime (filtrata per quelli non seguiti, ordinata in base popolarità piu alta)
